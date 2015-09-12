@@ -35,6 +35,12 @@ Describe the graphs that model the following problems.
 
 (a) The multiplication of an n × n matrix by a vector of length n.
 
-(b) The natural join of R(A,B) and S(B,C), where A, B, and C have do- mains of sizes a, b, and c, respectively.
+One reducer per output cell and each reducer computers $SUMj(A[i,j] * B[j,k])$
+
+(b) The natural join of R(A,B) and S(B,C), where A, B, and C have domains of sizes a, b, and c, respectively.
+
+The map function outputs the same value as its input, but changes the key to always be the join attribute b. Then, after the MapReduce system groups together the intermediate data by the intermediate key, i.e. the b values, we use the reduce function to do a nested loop join over each group. Because all the values from each group have the same join attribute, we don’t check the join attribute in the nested loop. We do need to check which relation each tuple comes from, so that (for example) we don’t join a tuple from R with itself, or with another R tuple.
 
 (c) The grouping and aggregation on the relation R(A,B), where A is the grouping attribute and B is aggregated by the MAX operation. Assume A and B have domains of size a and b, respectively.
+
+
