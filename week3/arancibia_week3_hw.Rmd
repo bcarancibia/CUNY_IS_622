@@ -20,7 +20,21 @@ The matrix-vector multiplication algorithm ($M \cdot v$) produces a key value pa
 
 Communication cost: $O(r + s)$
 
-In the union of $R$ and $S$, the mapper funtion passes key value pairs for each entry in $R$ and $S$. The communication cost is the total number of entries in *r* plus the total number of entries in *s* or $O(r + s)$.
+In the union of $R$ and $S$, the mapper funtion passes key value pairs for each entry in $R$ and $S$. The communication cost is the total number of entries in $R$ plus the total number of entries in $S$ or $O(r + s)$.
 
 
-(c) The aggregation algorithm of Section 2.3.8.
+(c) The aggregation algorithm
+
+Communication cost: Number of tuples $(a, b, c)$ 
+
+The communication cost of grouping relation $R(A, B, C)$ is just the number of tuples $(a, b, c)$ in the relation $R$.
+
+__2.6.1__
+
+Describe the graphs that model the following problems. 
+
+(a) The multiplication of an n × n matrix by a vector of length n.
+
+(b) The natural join of R(A,B) and S(B,C), where A, B, and C have do- mains of sizes a, b, and c, respectively.
+
+(c) The grouping and aggregation on the relation R(A,B), where A is the grouping attribute and B is aggregated by the MAX operation. Assume A and B have domains of size a and b, respectively.
