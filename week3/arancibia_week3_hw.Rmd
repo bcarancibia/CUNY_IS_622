@@ -1,0 +1,26 @@
+---
+title: "Week 3 Homework"
+author: "Ben Arancibia"
+date: "September 12, 2015"
+output:
+  pdf_document: default
+---
+
+__2.5.1__
+
+What is the communication cost of each of the following algorithms, as a function of the size of the relations, matrices, or vectors to which they are applied?
+
+(a) The matrix-vector multiplication algorithm
+
+Communication cost: $O(r * c)$
+
+The matrix-vector multiplication algorithm ($M \cdot v$) produces a key value pair for each entry in the matirx $M$. The communication cost is $O(r * c)$ where $r$ and $c$ are the number of rows and columns of $M$.
+
+(b) The union algorithm
+
+Communication cost: $O(r + s)$
+
+In the union of $R$ and $S$, the mapper funtion passes key value pairs for each entry in $R$ and $S$. The communication cost is the total number of entries in *r* plus the total number of entries in *s* or $O(r + s)$.
+
+
+(c) The aggregation algorithm of Section 2.3.8.
