@@ -43,4 +43,8 @@ The map function outputs the same value as its input, but changes the key to alw
 
 (c) The grouping and aggregation on the relation R(A,B), where A is the grouping attribute and B is aggregated by the MAX operation. Assume A and B have domains of size a and b, respectively.
 
+The graph consists of two steps, first local aggregation then a global aggregation. These steps basically correspond to Map and Reduce operations. Local aggregation is optional and raw records can be emitted, shuffled, and aggregated on a global aggregation phase.
+
+
+
 
