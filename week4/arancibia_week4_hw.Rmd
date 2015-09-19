@@ -351,3 +351,5 @@ angle(t(x),y)
 __3.7.1__
 
 Suppose we construct the basic family of six locality-sensitive functions for vectors of length six. For each pair of the vectors 000000, 110011, 010101, and 011100, which of the six functions makes them candidates?
+
+I don't think this question has a answer. All of these LSH functions have a random parameter so their output can vary. I think the 6 functions referred to are: jaccard, hamming, cos, sketch, euclid, and minhash distances 
