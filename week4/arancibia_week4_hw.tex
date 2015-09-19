@@ -1,0 +1,289 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{{#1}}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{{#1}}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{{#1}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\RegionMarkerTok}[1]{{#1}}
+\newcommand{\ErrorTok}[1]{\textbf{{#1}}}
+\newcommand{\NormalTok}[1]{{#1}}
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={Ben Arancibia},
+            pdftitle={IS622 Week 4 Homework},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{0}
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{IS622 Week 4 Homework}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{Ben Arancibia}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \predate{\centering\large\emph}
+  \postdate{\par}
+  \date{September 19, 2015}
+
+
+
+\begin{document}
+
+\maketitle
+
+
+\textbf{3.1.3} Suppose we have a universal set U of n elements, and we
+choose two subsets S and T at random, each with m of the n elements.
+What is the expected value of the Jaccard similarity of S and T ?
+
+Each item in T has an m / n chance of also being in S. The expected
+number of items common to S \& T is therefore m\^{}2 / n.
+
+Exp. Jaccard Similarity = (No. of common items) / (Size of T + Size of S
+- Number of common items) = m / (2n - m) after simplification.
+
+\textbf{3.3.3}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Compute the minhash signature for each column if we use the following
+  three hash functions: h1(x) = 2x + 1 mod 6; h2(x) = 3x + 2 mod 6;
+  h3(x)=5x+2 mod6.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{s1 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{); s2 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{); s3 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{)}
+\NormalTok{s4 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{); element <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{)}
+\NormalTok{h1 <-}\StringTok{ }\NormalTok{function(x) \{ (}\DecValTok{2}\NormalTok{*x +}\StringTok{ }\DecValTok{1}\NormalTok{) %%}\StringTok{ }\DecValTok{6} \NormalTok{\}}
+\NormalTok{h2 <-}\StringTok{ }\NormalTok{function(x) \{ (}\DecValTok{3}\NormalTok{*x +}\StringTok{ }\DecValTok{2}\NormalTok{) %%}\StringTok{ }\DecValTok{6} \NormalTok{\}}
+\NormalTok{h3 <-}\StringTok{ }\NormalTok{function(x) \{ (}\DecValTok{5}\NormalTok{*x +}\StringTok{ }\DecValTok{2}\NormalTok{) %%}\StringTok{ }\DecValTok{6} \NormalTok{\}}
+
+\NormalTok{hashlist <-}\StringTok{ }\KeywordTok{list}\NormalTok{(h1,h2,h3)}
+\NormalTok{setlist <-}\StringTok{ }\KeywordTok{list}\NormalTok{(s1,s2,s3,s4)}
+
+\NormalTok{solution_3}\FloatTok{.3.3} \NormalTok{<-}\StringTok{ }\KeywordTok{computeMinhashSigs}\NormalTok{(hashlist, setlist)}
+
+\CommentTok{#switch the binary to their corresponding values.}
+
+\NormalTok{s1 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{5}\NormalTok{); s2 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{); s3 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{); s4 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{)}
+\NormalTok{setlist <-}\StringTok{ }\KeywordTok{list}\NormalTok{(s1,s2,s3,s4)}
+
+\NormalTok{solution_3}\FloatTok{.3.3} \NormalTok{<-}\StringTok{ }\KeywordTok{computeMinhashSigs}\NormalTok{(hashlist, setlist)}
+\NormalTok{solution_3}\FloatTok{.3.3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4]
+## [1,]    5    1    1    1
+## [2,]    2    2    2    2
+## [3,]    0    1    4    0
+\end{verbatim}
+
+￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼ It looks like the h2 has believes each row is
+identical while h1 believes they look nearly identical
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Which of these hash functions are true permutations?
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{hashlist <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\StringTok{"h1"}\NormalTok{=h1,}\StringTok{"h2"}\NormalTok{=h2,}\StringTok{"h3"}\NormalTok{=h3)}
+\NormalTok{row_count <-}\StringTok{ }\DecValTok{5}
+
+\KeywordTok{hashPermuteDirect}\NormalTok{(hashlist, row_count)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2]
+## [1,] "h1" "3" 
+## [2,] "h2" "2" 
+## [3,] "h3" "6"
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  How close are the estimated Jaccard similarities for the six pairs of
+  columns to the true Jaccard similarities?
+\end{enumerate}
+
+Pretty close
+
+\textbf{3.5.5}
+
+Compute the cosines of the angles between each of the following pairs of
+vectors.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{angle <-}\StringTok{ }\NormalTok{function(x,y)\{}
+  \NormalTok{dot.prod <-}\StringTok{ }\NormalTok{x%*%y }
+  \NormalTok{norm.x <-}\StringTok{ }\KeywordTok{norm}\NormalTok{(x,}\DataTypeTok{type=}\StringTok{"2"}\NormalTok{)}
+  \NormalTok{norm.y <-}\StringTok{ }\KeywordTok{norm}\NormalTok{(y,}\DataTypeTok{type=}\StringTok{"2"}\NormalTok{)}
+  \NormalTok{theta <-}\StringTok{ }\KeywordTok{acos}\NormalTok{(dot.prod /}\StringTok{ }\NormalTok{(norm.x *}\StringTok{ }\NormalTok{norm.y))}
+  \KeywordTok{as.numeric}\NormalTok{(theta)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  (3,−1,2)and(−2,3,1).
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,-}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\NormalTok{y <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(-}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\KeywordTok{angle}\NormalTok{(}\KeywordTok{t}\NormalTok{(x),y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.094395
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  (1,2,3)and(2,4,6).
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{))}
+\NormalTok{y <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{))}
+\KeywordTok{angle}\NormalTok{(}\KeywordTok{t}\NormalTok{(x),y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.107342e-08
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  (5,0,−4)and(−1,−6,2).
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{0}\NormalTok{,-}\DecValTok{4}\NormalTok{))}
+\NormalTok{y <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(-}\DecValTok{1}\NormalTok{,-}\DecValTok{6}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\KeywordTok{angle}\NormalTok{(}\KeywordTok{t}\NormalTok{(x),y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.893438
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{3}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  (0,1,1,0,1,1) and (0,0,1,0,0,0).
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\NormalTok{y <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\KeywordTok{angle}\NormalTok{(}\KeywordTok{t}\NormalTok{(x),y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.047198
+\end{verbatim}
+
+\end{document}
