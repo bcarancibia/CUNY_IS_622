@@ -346,3 +346,8 @@ x <- as.matrix(c(0,1,1,0,1,1))
 y <- as.matrix(c(0,0,1,0,0,0))
 angle(t(x),y)
 ```
+
+
+__3.7.1__
+
+Suppose we construct the basic family of six locality-sensitive functions for vectors of length six. For each pair of the vectors 000000, 110011, 010101, and 011100, which of the six functions makes them candidates?
