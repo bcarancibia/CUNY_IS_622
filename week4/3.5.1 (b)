@@ -1,0 +1,38 @@
+3.5.1 (b)
+
+1. d(x, y) ≥ 0 (no negative distances).
+2. d(x,y) = 0 if and only if x = y (distances are positive, except for the distance from a point to itself).
+3. d(x, y) = d(y, x) (distance is symmetric).
+4. d(x, y) ≤ d(x, z) + d(z, y) (the triangle inequality).
+
+Exercise 3.5.1 : On the space of nonnegative integers, which of the following functions are distance measures? If so, prove it; if not, prove that it fails to satisfy one or more of the axioms.
+
+
+
+(b) diff(x, y) = |x − y| (the absolute magnitude of the difference between x and y).
+
+
+1. Meets absolute value (no negative distance)
+2. Meets true for x=y and x=y=0
+3. Meets because absolute value |x-y|=|x-y|
+4. |x-y| ≤ |x-z|+|z-y| needs to be true.
+
+a)
+z<x<y
+|x-y| ≤ |x-z|+|z-y|
+y-x ≤ x-z + y - z
+2z ≤ 2x
+z ≤ x
+
+b) x < z < y
+|x-y| ≤ |x-z|+|z-y|
+y-x ≤ z-x+y-z
+0 ≤ 0
+
+c) x < y < i
+|x-y| ≤ |x-z|+|z-y|
+y-x ≤ z-x+y-z
+2y ≤ 2z
+y ≤ z
+
+QED
