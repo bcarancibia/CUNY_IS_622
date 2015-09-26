@@ -1,0 +1,8 @@
+---
+title: "IS622 Homework"
+author: "Ben Arancibia"
+date: "September 26, 2015"
+output: pdf_document
+---
+
+__4.2.1__
