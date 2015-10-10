@@ -1,0 +1,93 @@
+---
+title: "Twitter Streaming 1"
+output: pdf_document
+---
+
+```{r,echo=FALSE,warning=FALSE, results='hide',message=FALSE}
+library(twitteR)
+key <- 'txNHnsN48CFpoM4e9vrS6VvrB'
+secret <- 'How1y3RqO85VhMDV5d4Sxh5eMusYOLdDQ1vsu7g49kP2DV1qTk'
+access <- '286976735-ltrF1PIA573UVceBCKhJOMLPPRCobEDnp35qJGr2'
+access_secret <- 'mp4aHXUl4NqUtuoF7O0npAGptt1YoYJoU5uhERppTLdBh'
+
+setup_twitter_oauth(key,secret,access,access_secret)
+
+Sys.setenv(JAVA_HOME="/usr/lib/jvm/default-java")
+Sys.setenv(HADOOP_CMD="/home/bcarancibia/workspace/cuny_msda_is622/hadoop-2.7.1/bin/hadoop")
+Sys.setenv(HADOOP_STREAMING="/home/bcarancibia/workspace/cuny_msda_is622/hadoop-2.7.1/share/hadoop/tools/lib/hadoop-streaming-2.7.1.jar")
+
+Sys.setenv(SPARK_HOME = "/home/bcarancibia/workspace/cuny_msda_is622/spark-1.4.1-bin-hadoop2.6")
+.libPaths(c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib"), .libPaths()))
+library(SparkR)
+
+sc <- sparkR.init(master="local")
+sqlContext <- sparkRSQL.init(sc)
+
+```
+
+Set the packages. Vital information was hidden as well as warning and output. 
+
+```{r, eval=FALSE}
+library(twitteR)
+
+setup_twitter_oauth(key,secret,access,access_secret)
+
+Sys.setenv(JAVA_HOME="/usr/lib/jvm/default-java")
+Sys.setenv(HADOOP_CMD="/home/bcarancibia/workspace/cuny_msda_is622/hadoop-2.7.1/bin/hadoop")
+Sys.setenv(HADOOP_STREAMING="/home/bcarancibia/workspace/cuny_msda_is622/hadoop-2.7.1/share/hadoop/tools/lib/hadoop-streaming-2.7.1.jar")
+
+Sys.setenv(SPARK_HOME = "/home/bcarancibia/workspace/cuny_msda_is622/spark-1.4.1-bin-hadoop2.6")
+.libPaths(c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib"), .libPaths()))
+library(SparkR)
+
+sc <- sparkR.init(master="local")
+sqlContext <- sparkRSQL.init(sc)
+```
+
+I am going to look at Twitter data, specifically looking at the hashtag #datarevolution. This is an important hashtag in the international development space because of the recent increase in desire for countries, companies, and aid organizations to integrate analytics into their everyday workflows. I am going to collect hashtags and then count the top ten screen names.
+
+```{r}
+
+tweets <- searchTwitter("#datarevolution",n=9999)
+x <- twListToDF(tweets)
+
+sparkdf <- createDataFrame(sqlContext, x)
+
+group <- agg(group_by(sparkdf, sparkdf$screenName), sum_of_screenname=(count(sparkdf$screenName)))
+head(group)
+
+```
+
+```{r}
+library(ggplot2)
+library(lubridate)
+library(forecast)
+
+x$created <- parse_date_time(x$created, "%Y%m%d %H%M%S", truncated = 3)
+
+x$day <- day(x$created)
+x$month <- month(x$created)
+x$year <- year(x$created)
+x$hour <- hour(x$created)
+x$minute <- minute(x$created)
+x$time <- sprintf('%02d:%02d', x$hour, x$minute)
+x$myd <- sprintf('%02d/%02d/%02d', x$month, x$day, x$year)
+
+#Tweets by Month, Day, Year
+qplot(x$myd, data = x, geom="histogram")
+
+qplot(x$day, data=x, geom="histogram")
+
+qplot(x$month, data=x, geom="histogram")
+```
+
+One thing to notice is that the R package to scrape tweets, only seems to take into account the past week or so. 
+
+
+Group by Screenname and sum the retweets per screen. This can be used in the future to do a social network analysis
+
+```{r}
+group <- agg(group_by(sparkdf, sparkdf$screenName), sum_of_retweets=(sum(sparkdf$retweetCount)))
+
+head(group,10)
+```
