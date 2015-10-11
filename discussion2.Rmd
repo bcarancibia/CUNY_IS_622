@@ -1,6 +1,6 @@
 ---
-title: "Twitter Streaming 1"
-output: word_document
+title: "Twitter Streaming 2"
+output: pdf_document
 ---
 
 ```{r,echo=FALSE,warning=FALSE, results='hide',message=FALSE}
@@ -44,7 +44,7 @@ sc <- sparkR.init(master="local")
 sqlContext <- sparkRSQL.init(sc)
 ```
 
-I am going to look at Twitter data, specifically looking at the hashtag #datarevolution. This is an important hashtag in the international development space because of the recent increase in desire for countries, companies, and aid organizations to integrate analytics into their everyday workflows. I am going to collect hashtags and then count the top ten screen names.
+I am going to look at Twitter data, specifically looking at the hashtag #datarevolution. This is an important hashtag in the international development space because of the recent increase in desire for countries, companies, and aid organizations to integrate analytics into their everyday workflows. I am going to collect hashtags and then count the top ten screen names that use the hashtag #datarevolution.
 
 ```{r}
 
@@ -57,6 +57,9 @@ group <- agg(group_by(sparkdf, sparkdf$screenName), sum_of_screenname=(count(spa
 head(group)
 
 ```
+
+
+The next step is to parse out dates and then quickly plot the data to get an idea of distribution of the data.
 
 ```{r}
 library(ggplot2)
@@ -78,16 +81,16 @@ qplot(x$myd, data = x, geom="histogram")
 
 qplot(x$day, data=x, geom="histogram")
 
-qplot(x$month, data=x, geom="histogram")
+
 ```
 
-One thing to notice is that the R package to scrape tweets, only seems to take into account the past week or so. 
+One thing to notice is that the R package to scrape tweets, only seems to take into account the past week or so. Based on the twitteR package, there could be Twitter API restrictions  
 
 
-Group by Screen and sum retweets.
+Group by Screenname and sum the retweets per screen. This can be used in the future to do a social network analysis.
 
 ```{r}
-group <- agg(group_by(sparkdf, sparkdf$screenName), sum_of_retweets=(sum(sparkdf$retweetCount,)))
+group <- agg(group_by(sparkdf, sparkdf$screenName), sum_of_retweets=(sum(sparkdf$retweetCount)))
 
 head(group,10)
 ```

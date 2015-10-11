@@ -1,0 +1,144 @@
+---
+title: "Twitter Streaming 2"
+output: pdf_document
+---
+
+```{r,echo=FALSE,warning=FALSE, results='hide',message=FALSE}
+library(twitteR)
+key <- 'txNHnsN48CFpoM4e9vrS6VvrB'
+secret <- 'How1y3RqO85VhMDV5d4Sxh5eMusYOLdDQ1vsu7g49kP2DV1qTk'
+access <- '286976735-ltrF1PIA573UVceBCKhJOMLPPRCobEDnp35qJGr2'
+access_secret <- 'mp4aHXUl4NqUtuoF7O0npAGptt1YoYJoU5uhERppTLdBh'
+
+setup_twitter_oauth(key,secret,access,access_secret)
+
+Sys.setenv(JAVA_HOME="/usr/lib/jvm/default-java")
+Sys.setenv(HADOOP_CMD="/home/bcarancibia/workspace/cuny_msda_is622/hadoop-2.7.1/bin/hadoop")
+Sys.setenv(HADOOP_STREAMING="/home/bcarancibia/workspace/cuny_msda_is622/hadoop-2.7.1/share/hadoop/tools/lib/hadoop-streaming-2.7.1.jar")
+
+Sys.setenv(SPARK_HOME = "/home/bcarancibia/workspace/cuny_msda_is622/spark-1.4.1-bin-hadoop2.6")
+.libPaths(c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib"), .libPaths()))
+library(SparkR)
+
+sc <- sparkR.init(master="local")
+sqlContext <- sparkRSQL.init(sc)
+
+```
+
+Set the packages. Vital information was hidden as well as warning and output. 
+
+```{r, eval=FALSE,tidy=TRUE}
+library(twitteR)
+
+setup_twitter_oauth(key,secret,access,access_secret)
+
+Sys.setenv(JAVA_HOME="/usr/lib/jvm/default-java")
+Sys.setenv(HADOOP_CMD="/home/bcarancibia/workspace/cuny_msda_is622/hadoop-2.7.1/bin/hadoop")
+Sys.setenv(HADOOP_STREAMING="/home/bcarancibia/workspace/cuny_msda_is622/hadoop-2.7.1/share/hadoop/tools/lib/hadoop-streaming-2.7.1.jar")
+
+Sys.setenv(SPARK_HOME = "/home/bcarancibia/workspace/cuny_msda_is622/spark-1.4.1-bin-hadoop2.6")
+.libPaths(c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib"), .libPaths()))
+library(SparkR)
+
+sc <- sparkR.init(master="local")
+sqlContext <- sparkRSQL.init(sc)
+```
+
+I am going to look at Twitter data, specifically looking at the hashtag #datarevolution. This is an important hashtag in the international development space because of the recent increase in desire for countries, companies, and aid organizations to integrate analytics into their everyday workflows. I am going to collect hashtags and then count the top ten screen names that use the hashtag #datarevolution.
+
+```{r}
+
+tweets <- searchTwitter("#datarevolution",n=9999)
+x <- twListToDF(tweets)
+
+sparkdf <- createDataFrame(sqlContext, x)
+
+group <- agg(group_by(sparkdf, sparkdf$screenName), sum_of_screenname=(count(sparkdf$screenName)))
+head(group)
+
+```
+
+
+The next step is to parse out dates and then quickly plot the data to get an idea of distribution of the data.
+
+```{r}
+library(ggplot2)
+library(lubridate)
+library(forecast)
+
+x$created <- parse_date_time(x$created, "%Y%m%d %H%M%S", truncated = 3)
+
+x$day <- day(x$created)
+x$month <- month(x$created)
+x$year <- year(x$created)
+x$hour <- hour(x$created)
+x$minute <- minute(x$created)
+x$time <- sprintf('%02d:%02d', x$hour, x$minute)
+x$myd <- sprintf('%02d/%02d/%02d', x$month, x$day, x$year)
+
+#Tweets by Month, Day, Year
+qplot(x$myd, data = x, geom="histogram")
+
+qplot(x$day, data=x, geom="histogram")
+
+
+```
+
+One thing to notice is that the R package to scrape tweets, only seems to take into account the past week or so. Based on the twitteR package, there could be Twitter API restrictions  
+
+
+Group by Screenname and sum the retweets per screen. This can be used in the future to do a social network analysis.
+
+```{r}
+group <- agg(group_by(sparkdf, sparkdf$screenName), sum_of_retweets=(sum(sparkdf$retweetCount)))
+
+head(group,10)
+```
+
+
+#Transaction Itemsets.
+
+I decided to look at userid and myd. The hope is to find frequent user ids to specific month year and day.
+
+```{r}
+library(arules)
+transaction <- x[,c('id','myd')]
+
+transactions <- as(split(as.vector(transaction$id),as.vector(transaction$myd)),"transactions")
+
+
+params <- list(supp=0.2, minlen=2, maxlen=4,target="frequent itemsets")
+results <- apriori(transactions,parameter=params)
+
+results
+```
+
+Initial results are 0 whic is surprising, so that means that no userid is tweeting more than once per day. The next implementation of the itemsets is look at userids and hour when tweeting. The hope is to see if there is frequency there.
+
+```{r}
+transactions <- x[,c('id','hour')]
+
+transactions <- as(split(as.vector(transactions$id),as.vector(transactions$hour)),"transactions")
+
+params <- list(supp=0.2, minlen=2, maxlen=4,target="frequent itemsets")
+results <- apriori(transactions,parameter=params)
+
+results
+```
+
+Again there is a set of 0 itemsets. This might be due to the parameters I set. I will reduce support and min length to see if there is any change.
+
+```{r}
+transactions <- x[,c('id','hour')]
+
+transactions <- as(split(as.vector(transactions$id),as.vector(transactions$hour)),"transactions")
+
+params <- list(supp=0.03, minlen=2, maxlen=4,target="frequent itemsets")
+results <- apriori(transactions,parameter=params)
+
+results
+```
+
+Lowering the support level causes an increase in the itemsets.  
+
+
