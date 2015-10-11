@@ -77,16 +77,14 @@ Take the list of baskets and apply the same algorithm as in 6.1.1.
 
 for b in baskets if (i%in% b)
 
-```{r,echo=FALSE,eval=FALSE}
-baskets <- list(c(1,2,3), c(2,3,4), c(3,4,5), c(4,5,6),
-c(1,3,5), c(2,4,6), c(1,3,4), c(2,4,5),
-c(3,5,6), c(1,2,4), c(2,3,5), c(3,4,6))
+Baskets are : {1,2,3} {2,3,4} {3,4,5} {4,5,6} {1,3,5} {2,4,6} {1,3,4} {2,4,5} {3,5,6} {1,2,4} {2,3,5} {3,4,6}
 
+```{r,eval=FALSE}
 for (i in 1:6) {
-  count <- 0
+  basketcount <- 0
   for (b in baskets) {
     if (i %in% b) {
-      count <- count + 1}
+      basketcount <- basketcount + 1}
 }
 print(paste(i, count))
 }
@@ -125,46 +123,26 @@ Pairs | Support
 
 (b) Which pairs hash to which buckets?
 
-logic from text
-```
 FOR (each basket) {
   FOR (each item)
     add 1 to item’s count;
   FOR (each pair of items) {
-    hash the pair to a bucket;
+    hash the pair to a bucket (1);
     add 1 to the count for that
     bucket
   }
 }
-```
-```{r,echo=FALSE,eval=FALSE}
-p <- expand.grid(1:6, 1:6)
-p2 <- p[p[,2] > p[,1],]
-p2 <- p2[order(p2[,1]),]
-for (i in 1:nrow(p2)) {
-hb <- (p2[i,1] * p2[i,2]) %% 11
-pair <- paste("(", p2[i,1], ",", p2[i,2], ")", sep="")
-print(paste(pair,hb))
-}
+
+```{r}
+pairs <- matrix(c(1,1,2,1,2,3,1,2,3,4,1,2,3,4,5, 2,3,3,4,4,4,5,5,5,5,6,6,6,6,6), nrow=15,ncol=2)
+
+for (i in 1:nrow(pairs)) {
+  hash <- (pairs[i,1] * pairs[i,2]) %% 11
+  numbers <- paste("(",pairs[i,1], ",", pairs[i,2], ")", sep="")
+  print(paste(numbers,hash))}
 ```
 
-Pair | Bucket
-------------- | -------------
-(1,2) | 2
-(1,3) | 3
-(1,4) | 4
-(1,5) | 5
-(1,6) | 6
-(2,3) | 6
-(2,4) | 8
-(2,5) | 10
-(2,6) | 1
-(3,4) | 1
-(3,5) | 4
-(3,6) | 7
-(4,5) | 9
-(4,6) | 2
-(5,6) | 8
+
 
 (c) Which buckets are frequent?
 
@@ -174,25 +152,7 @@ For the buckets calculated above, 1,2,4,6, and 8 are frequent with 2 pairs assoc
 
 For the pairs to be counted in the second pass of the PCY Algorithm, the support has to be 4 or greater (our initial threshold is 4). Pair(3,4), Pair(3,5), and Pair(2,4) have support that are equal to four. This can be seen above in part (a) when calculating pairs and support.
 
-Count which baskets support each bucket
 
-Pairs | Support
-------------- | -------------
-(1,2) | 2
-(1,3) | 3
-(1,4) | 2
-(1,5) | 1
-(1,6) | 0
-(2,3) | 3
-(2,4) | 4
-(2,5) | 2
-(2,6) | 1
-(3,4) | 4
-(3,5) | 4
-(3,6) | 2
-(4,5) | 3
-(4,6) | 3
-(5,6) | 2
 
 
 __6.3.2__
@@ -218,20 +178,18 @@ FOR (each basket) {
   }
 }
 ```
+```{r}
+pairs <- matrix(c(1,1,2,1,2,3,1,2,3,4,1,2,3,4,5, 2,3,3,4,4,4,5,5,5,5,6,6,6,6,6), nrow=15,ncol=2)
 
-This results in the following buckets with pairs.
+for (i in 1:nrow(pairs)) {
+  hash <- (pairs[i,1] * pairs[i,2]) %% 9
+  numbers <- paste("(",pairs[i,1], ",", pairs[i,2], ")", sep="")
+  print(paste(numbers,hash))}
+```
+```
 
-Bucket | Pairs
-------------- | -------------
-1 | 1
-2 | 1
-3 | 1
-5 | 2
-6 | 1
-7| 2
-8 | 2
 
-Yes the second pass reduces the count of buckets.
+Yes the second pass reduces the count of buckets because only have nine buckets instead of eleven
 
 
 
