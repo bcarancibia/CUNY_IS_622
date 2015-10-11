@@ -1,5 +1,5 @@
 ---
-title: "Twitter Streaming 2"
+title: "Frequent Itemsets"
 output: pdf_document
 ---
 
