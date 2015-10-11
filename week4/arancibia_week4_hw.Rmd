@@ -217,8 +217,6 @@ hashPermuteDirect <- function(hashlist, row_count) {
 #    particular band is s^r
 allRows <- function(s,r) { s^r }
 
-# 2. The probability that the signatures disagree in at least one row
-#    of a particular band is 1 - s^r.
 OneRowSpecBand <- function(s,r) { 1 - s^r }
 
 # 3. The probability that the signatures disagree in at least one row
@@ -280,15 +278,13 @@ h3 <- function(x) { (5*x + 2) %% 6 }
 hashlist <- list(h1,h2,h3)
 setlist <- list(s1,s2,s3,s4)
 
-solution_3.3.3 <- computeMinhashSigs(hashlist, setlist)
-
-#switch the binary to their corresponding values.
+results <- computeMinhashSigs(hashlist, setlist)
 
 s1 <- c(2,5); s2 <- c(0,1); s3 <- c(3,4); s4 <- c(0,2,4)
 setlist <- list(s1,s2,s3,s4)
 
-solution_3.3.3 <- computeMinhashSigs(hashlist, setlist)
-solution_3.3.3
+result <- computeMinhashSigs(hashlist, setlist)
+result
 ```
 ￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
 It looks like the h2 has believes each row is identical while h1 believes they look nearly identical
@@ -303,7 +299,7 @@ hashPermuteDirect(hashlist, row_count)
 
 (c) How close are the estimated Jaccard similarities for the six pairs of columns to the true Jaccard similarities?
 
-Pretty close
+I think they are close, but not sure on my calculations...functions might not be working correctly
 
 
 __3.5.5__
@@ -319,19 +315,20 @@ angle <- function(x,y){
   as.numeric(theta)
 }
 ```
+
 (a) (3,−1,2)and(−2,3,1).
 ```{r}
 x <- as.matrix(c(3,-1,2))
 y <- as.matrix(c(-2,3,1))
 angle(t(x),y)
 ```
+
 (b) (1,2,3)and(2,4,6).
 ```{r}
 x <- as.matrix(c(1,2,3))
 y <- as.matrix(c(2,4,6))
 angle(t(x),y)
 ```
-
 
 (c) (5,0,−4)and(−1,−6,2).
 ```{r}
@@ -352,4 +349,4 @@ __3.7.1__
 
 Suppose we construct the basic family of six locality-sensitive functions for vectors of length six. For each pair of the vectors 000000, 110011, 010101, and 011100, which of the six functions makes them candidates?
 
-I don't think this question has a answer. All of these LSH functions have a random parameter so their output can vary. I think the 6 functions referred to are: jaccard, hamming, cos, sketch, euclid, and minhash distances 
+I don't think this question has an answer....all of the six functions have a random parameter so their output varies

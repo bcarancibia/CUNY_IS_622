@@ -133,15 +133,13 @@ Exp. Jaccard Similarity = (No. of common items) / (Size of T + Size of S
 \NormalTok{hashlist <-}\StringTok{ }\KeywordTok{list}\NormalTok{(h1,h2,h3)}
 \NormalTok{setlist <-}\StringTok{ }\KeywordTok{list}\NormalTok{(s1,s2,s3,s4)}
 
-\NormalTok{solution_3}\FloatTok{.3.3} \NormalTok{<-}\StringTok{ }\KeywordTok{computeMinhashSigs}\NormalTok{(hashlist, setlist)}
-
-\CommentTok{#switch the binary to their corresponding values.}
+\NormalTok{results <-}\StringTok{ }\KeywordTok{computeMinhashSigs}\NormalTok{(hashlist, setlist)}
 
 \NormalTok{s1 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{5}\NormalTok{); s2 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{); s3 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{); s4 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{)}
 \NormalTok{setlist <-}\StringTok{ }\KeywordTok{list}\NormalTok{(s1,s2,s3,s4)}
 
-\NormalTok{solution_3}\FloatTok{.3.3} \NormalTok{<-}\StringTok{ }\KeywordTok{computeMinhashSigs}\NormalTok{(hashlist, setlist)}
-\NormalTok{solution_3}\FloatTok{.3.3}
+\NormalTok{result <-}\StringTok{ }\KeywordTok{computeMinhashSigs}\NormalTok{(hashlist, setlist)}
+\NormalTok{result}
 \end{Highlighting}
 \end{Shaded}
 
@@ -188,7 +186,8 @@ identical while h1 believes they look nearly identical
   columns to the true Jaccard similarities?
 \end{enumerate}
 
-Pretty close
+I think they are close, but not sure on my calculations\ldots{}functions
+might not be working correctly
 
 \textbf{3.5.5}
 
@@ -293,9 +292,7 @@ functions for vectors of length six. For each pair of the vectors
 000000, 110011, 010101, and 011100, which of the six functions makes
 them candidates?
 
-I don't think this question has a answer. All of these LSH functions
-have a random parameter so their output can vary. I think the 6
-functions referred to are: jaccard, hamming, cos, sketch, euclid, and
-minhash distances
+I don't think this question has an answer\ldots{}.all of the six
+functions have a random parameter so their output varies
 
 \end{document}
