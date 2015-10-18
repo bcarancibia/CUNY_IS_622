@@ -1,0 +1,38 @@
+---
+title: "IS 622 Week 8 Homework"
+author: "Ben Arancibia"
+date: "October 18, 2015"
+output:
+  pdf_document:
+    keep_tex: yes
+    latex_engine: xelatex
+---
+
+__7.1.3__
+
+Suppose we have a d-dimensional Euclidean space. Consider vectors whose components are only +1 or −1 in each dimension. Note that each vector has length d^(1/2), so the product of their lengths (denominator in the formula for the cosine of the angle between them) is d. If we chose each component independently, and a component is as likely to be +1 as −1, what is the distribution of the value of the numerator of the formula (i.e., the sum of the products of the corresponding components from each vector)? What can you say about the expected value of the cosine of the angle between the vectors, as d grows large?
+
+If we have a d-dimensional Euclidean space, a problem exists of "curse of dimensionality". In high dimensions almost all pairs are equally far away from one other. As defined in the problem, you have two equally likely possibilitys +1 and -1. Since they are equally likely the value of the summing would be 0 (1 + -1 = 0). For large d, the cosine of an angle is close to 0 because the summation is 0. If the cosine of an angle is 0 then the angle has to be close to 90 degrees.
+
+
+__7.2.1__
+
+Perform a hierarchical clustering of the one-dimensional set of points 1, 4, 9, 16, 25, 36, 49, 64, 81, assuming clusters are represented by their centroid (average), and at each step the clusters with the closest centroids are merged.
+
+```{r}
+clusters <- list( c(1), c(4), c(9), c(16), c(25), c(36), c(49), c(64), c(81))
+
+hc <- hclust(dist(clusters), "cen")
+
+plot(hc, main = "From 9 clusters to 1, Follow tree up")
+
+```
+
+__7.2.2__
+
+How would the clustering of Example 7.2 change if we used for the distance between two clusters:
+
+(a) The minimum of the distances between any two points, one from each cluster.
+
+(b) The average of the distances between pairs of points, one from each of the two clusters.
+
