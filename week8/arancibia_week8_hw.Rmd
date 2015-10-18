@@ -23,6 +23,7 @@ Perform a hierarchical clustering of the one-dimensional set of points 1, 4, 9, 
 clusters <- list( c(1), c(4), c(9), c(16), c(25), c(36), c(49), c(64), c(81))
 
 hc <- hclust(dist(clusters), "cen")
+hc$merge
 
 plot(hc, main = "From 9 clusters to 1, Follow tree up")
 
@@ -32,7 +33,25 @@ __7.2.2__
 
 How would the clustering of Example 7.2 change if we used for the distance between two clusters:
 
+```{r}
+points <- c(2,2,3,4,5,2,9,3,12,3,11,4,10,5,12,6,6,8,4,8,4,10,7,10)
+points <- matrix(points, nrow=12, ncol=2, byrow=TRUE)
+points <- as.data.frame(points)
+
+points
+
+```
+
 (a) The minimum of the distances between any two points, one from each cluster.
+
+```{r}
+hc <- hclust(dist(points), "single")
+plot(hc)
+```
 
 (b) The average of the distances between pairs of points, one from each of the two clusters.
 
+```{r}
+hc <- hclust(dist(points), "average")
+plot(hc)
+```

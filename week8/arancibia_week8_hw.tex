@@ -142,7 +142,24 @@ centroids are merged.
 \NormalTok{clusters <-}\StringTok{ }\KeywordTok{list}\NormalTok{( }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\DecValTok{9}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\DecValTok{16}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\DecValTok{25}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\DecValTok{36}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\DecValTok{49}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\DecValTok{64}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\DecValTok{81}\NormalTok{))}
 
 \NormalTok{hc <-}\StringTok{ }\KeywordTok{hclust}\NormalTok{(}\KeywordTok{dist}\NormalTok{(clusters), }\StringTok{"cen"}\NormalTok{)}
+\NormalTok{hc$merge}
+\end{Highlighting}
+\end{Shaded}
 
+\begin{verbatim}
+##      [,1] [,2]
+## [1,]   -1   -2
+## [2,]   -3    1
+## [3,]   -4   -5
+## [4,]    2    3
+## [5,]   -6   -7
+## [6,]   -8   -9
+## [7,]    5    6
+## [8,]    4    7
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \KeywordTok{plot}\NormalTok{(hc, }\DataTypeTok{main =} \StringTok{"From 9 clusters to 1, Follow tree up"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -154,14 +171,65 @@ centroids are merged.
 How would the clustering of Example 7.2 change if we used for the
 distance between two clusters:
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{points <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{9}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{12}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{12}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{10}\NormalTok{)}
+\NormalTok{points <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(points, }\DataTypeTok{nrow=}\DecValTok{12}\NormalTok{, }\DataTypeTok{ncol=}\DecValTok{2}\NormalTok{, }\DataTypeTok{byrow=}\OtherTok{TRUE}\NormalTok{)}
+\NormalTok{points <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(points)}
+
+\NormalTok{points}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    V1 V2
+## 1   2  2
+## 2   3  4
+## 3   5  2
+## 4   9  3
+## 5  12  3
+## 6  11  4
+## 7  10  5
+## 8  12  6
+## 9   6  8
+## 10  4  8
+## 11  4 10
+## 12  7 10
+\end{verbatim}
+
 \begin{enumerate}
 \def\labelenumi{(\alph{enumi})}
+\itemsep1pt\parskip0pt\parsep0pt
 \item
   The minimum of the distances between any two points, one from each
   cluster.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{hc <-}\StringTok{ }\KeywordTok{hclust}\NormalTok{(}\KeywordTok{dist}\NormalTok{(points), }\StringTok{"single"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(hc)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{arancibia_week8_hw_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\itemsep1pt\parskip0pt\parsep0pt
 \item
   The average of the distances between pairs of points, one from each of
   the two clusters.
 \end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{hc <-}\StringTok{ }\KeywordTok{hclust}\NormalTok{(}\KeywordTok{dist}\NormalTok{(points), }\StringTok{"average"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(hc)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{arancibia_week8_hw_files/figure-latex/unnamed-chunk-4-1.pdf}
 
 \end{document}
