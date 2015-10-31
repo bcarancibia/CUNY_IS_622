@@ -1,0 +1,93 @@
+---
+title: "Week 10 Mini Project Clustering"
+author: "Ben Arancibia"
+date: "10/31/2015"
+output: pdf_document
+---
+
+This project will focus on taking data from the R package cluster.datasets nd performing a cluster analysis on the data. The first thing to do is setup the appropriate environment using the following.
+
+```{r,echo=FALSE,warning=FALSE, results='hide',message=FALSE}
+
+
+Sys.setenv(JAVA_HOME="/usr/lib/jvm/default-java")
+Sys.setenv(HADOOP_CMD="/home/bcarancibia/workspace/cuny_msda_is622/hadoop-2.7.1/bin/hadoop")
+Sys.setenv(HADOOP_STREAMING="/home/bcarancibia/workspace/cuny_msda_is622/hadoop-2.7.1/share/hadoop/tools/lib/hadoop-streaming-2.7.1.jar")
+
+Sys.setenv(SPARK_HOME = "/home/bcarancibia/workspace/cuny_msda_is622/spark-1.4.1-bin-hadoop2.6")
+.libPaths(c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib"), .libPaths()))
+library(SparkR)
+sc <- sparkR.init(master="local")
+sqlContext <- sparkRSQL.init(sc)
+
+```
+
+
+I am going to cluster waiting time between eruptions and the duration of eruptions for the Old Faithful geyser in Yellowstone. This dataset faithful is part of base R.
+
+```{r}
+
+data <- faithful
+
+kmeans.data<- kmeans(data, 3)
+
+plot(data)
+points(kmeans.data$centers, pch=19, col="red")
+
+
+```
+
+Looking at the initial datasets there are two clusters.
+
+```{r}
+kmeans.data<- kmeans(data, 2)
+
+plot(data)
+points(kmeans.data$centers, pch=19, col="red")
+
+```
+
+
+Next do this in Spark.
+
+```{r}
+
+df <- createDataFrame(sqlContext, faithful)
+df
+
+getScaled <- function(data, column, min, max){
+    if(max != min) eval(parse(text=paste("data$",column," <- (data$", column, "-",min,")/(",max,"-",min,")", sep='')))
+    return (data)
+}
+
+km_scale <- function(data, numericVars){
+    scales <- c()
+    for(var in numericVars){
+        min <- getMin(data, var)
+        max <- getMax(data, var)
+        data <- getScaled(data, var, min, max)
+        scales <- c(scales, eval(parse(text=paste("c('",var, "_min' = min, '",var,"_max' = max)", sep=""))))
+    }
+    return(list("data"= data, "scales"=scales))
+}
+
+getClusters <- function(data, k){
+    data$cluster <- cast(data[[1]]*0, 'integer')
+    for(i in 1:k){
+        data$temp_cluster <- cast(data[[1]]*0, 'integer')
+        for(j in 1:k){
+            if(i < j){
+                eval(parse(text=paste("data$temp_cluster <- 
+                       data$temp_cluster + cast(data$dist_",i," <= data$dist_",j,", 'integer')", sep="")))
+            }else if(j < i){
+                eval(parse(text=paste("data$temp_cluster <- 
+                       data$temp_cluster + cast(data$dist_",i," < data$dist_",j,", 'integer')", sep="")))
+            }
+        }
+        eval(parse(text=paste("data$cluster <- data$cluster + cast(data$temp_cluster == ",(k-1),", 'integer') * ",i,sep="")))
+        data <- removeColumns(data, c("temp_cluster"))
+    }
+    data <- setType(data, c("cluster"), "integer")
+    return(data)
+}
+```

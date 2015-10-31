@@ -3,9 +3,9 @@ title: "IS 622 Week 10 Homework"
 author: "Ben Arancibia"
 date: "October 31, 2015"
 output:
-  word_document: default
   pdf_document:
     latex_engine: lualatex
+  word_document: default
 ---
 
 __7.6.1__

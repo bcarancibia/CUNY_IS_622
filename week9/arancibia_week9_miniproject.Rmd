@@ -1,4 +1,3 @@
----
 title: "Clustering"
 author: "Ben Arancibia"
 date: "10/22/2015"
@@ -23,7 +22,6 @@ Sys.setenv(HADOOP_STREAMING="/home/bcarancibia/workspace/cuny_msda_is622/hadoop-
 Sys.setenv(SPARK_HOME = "/home/bcarancibia/workspace/cuny_msda_is622/spark-1.4.1-bin-hadoop2.6")
 .libPaths(c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib"), .libPaths()))
 library(SparkR)
-
 sc <- sparkR.init(master="local")
 sqlContext <- sparkRSQL.init(sc)
 
@@ -96,15 +94,15 @@ clusplot(mydata, clus$cluster, color=TRUE, shade=TRUE, labels=2, lines=0)
 Now implement clustering
 
 ```{r}
-data <- mydata
 
-data$retweetcluster <- NULL
 
-(data1 <- kmeans(data, 3)) 
+mydata$retweetcluster <- NULL
 
-table(data$retweetCount, data1$cluster)
+(data1 <- kmeans(mydata, 3)) 
 
-plot(data[c("retweetCount", "favoriteCount")], col=data1$cluster)
+table(mydata$retweetCount, data1$cluster)
+
+plot(mydata[c("retweetCount", "favoriteCount")], col=data1$cluster)
 points(data1$centers[,c("retweetCount", "favoriteCount")], col=1:3, pch=8, cex=2)
 
 ```
