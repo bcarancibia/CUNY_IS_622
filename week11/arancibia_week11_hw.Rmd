@@ -1,0 +1,25 @@
+---
+title: "IS 622 Week 11 Homework"
+author: "Ben Arancibia"
+date: "November 5, 2015"
+output: word_document
+---
+
+__9.3.1__
+
+Figure 9.8 is a utility matrix, representing the ratings, on a 1–5 star scale, of eight items, a through h, by three users A, B, and C. Compute the following from the data of this matrix.
+
+![Table](//Users/bcarancibia/CUNY_IS_622/week11/98.png)
+
+
+(a) Treating the utility matrix as boolean, compute the Jaccard distance between each pair of users.
+
+(b) Repeat Part (a), but use the cosine distance.
+
+(c) Treat ratings of 3, 4, and 5 as 1 and 1, 2, and blank as 0. Compute the Jaccard distance between each pair of users.
+
+(d) Repeat Part (c), but use the cosine distance.
+
+(e) Normalize th ematrix by subtracting from each nonblank entry the average value for its user.
+
+(f) Using the normalized matrix from Part (e), compute the cosine distance between each pair of users.
