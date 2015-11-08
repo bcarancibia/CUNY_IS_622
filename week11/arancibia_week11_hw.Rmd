@@ -51,7 +51,9 @@ jaccard <- function(m) {
     return( J )
 }
 
+jaccard(df)
 ```
+
 ```{r, echo=FALSE}
 jaccard <- function(v1, v2) {
   length(intersect(v1, v2)) / length(union(v1, v2))
@@ -71,7 +73,21 @@ jd
 
 (b) Repeat Part (a), but use the cosine distance.
 
-```{r}
+```{r, eval=FALSE}
+cos.sim <- function(ix) 
+{
+    A = X[ix[1],]
+    B = X[ix[2],]
+    return( sum(A*B)/sqrt(sum(A^2)*sum(B^2)) )
+}   
+n <- nrow(X) 
+cmb <- expand.grid(i=1:n, j=1:n) 
+C <- matrix(apply(cmb,1,cos.sim),n,n)
+
+cos.sim(df)
+```
+
+```{r, echo=FALSE}
 len <- function(v) { 
   sqrt(sum(v**2)) 
   }
@@ -83,21 +99,49 @@ cosine.dist <- function(v1, v2) {
 }
 
 
-cd <- user.pairs
-cd["Cosine.Distance"] <- 
+cosined <- user.pairs
+cosined["Cosine.Distance"] <- 
   apply(user.pairs, 1, function(i) {
     cosine.dist(df[i[1], ], df[i[2], ])
 })
 
 
-cd
+cosined
 
 ```
 
 (c) Treat ratings of 3, 4, and 5 as 1 and 1, 2, and blank as 0. Compute the Jaccard distance between each pair of users.
 
-```{r}
-binrating <- function(i) {ifelse(i %in% c(3, 4, 5), TRUE, FALSE)}
+```{r, eval=FALSE}
+binrating <- function(i) {
+  ifelse(i %in% c(3, 4, 5), TRUE, FALSE)
+  }
+jaccard <- function(m) {
+    A = tcrossprod(m)
+    im = which(A > 0, arr.ind=TRUE)
+    b = rowSums(m)
+    Aim = A[im]
+
+    ## Jacard formula: #common / (#i + #j - #common)
+    J = sparseMatrix(
+          i = im[,1],
+          j = im[,2],
+          x = Aim / (b[im[,1]] + b[im[,2]] - Aim),
+          dims = dim(A)
+    )
+
+    return( J )
+}
+
+jaccard(binrating)
+```
+
+
+```{r, echo=FALSE}
+
+binrating <- function(i) {
+  ifelse(i %in% c(3, 4, 5), TRUE, FALSE)
+  }
 
 # Apply distance function
 jd.c <- user.pairs
@@ -114,9 +158,24 @@ jd.c
 
 (d) Repeat Part (c), but use the cosine distance.
 
-```{r}
-cd.d <- user.pairs
-cd.d["Cosine.Distance"] <-
+```{r, eval=FALSE}
+
+cos.sim <- function(ix) 
+{
+    A = X[ix[1],]
+    B = X[ix[2],]
+    return( sum(A*B)/sqrt(sum(A^2)*sum(B^2)) )
+}   
+n <- nrow(X) 
+cmb <- expand.grid(i=1:n, j=1:n) 
+C <- matrix(apply(cmb,1,cos.sim),n,n)
+
+cos.sim(binrating)
+```
+
+```{r, echo=FALSE}
+cosined.d <- user.pairs
+cosined.d["Cosine.Distance"] <-
   apply(user.pairs, 1, function(i) {
     v1 <- binrating(df[i[1], ])
     v2 <- binrating(df[i[2], ])
@@ -124,35 +183,53 @@ cd.d["Cosine.Distance"] <-
   })
 
 # Format output
-cd.d
+cosined.d
 
 ```
 
-(e) Normalize th ematrix by subtracting from each nonblank entry the average value for its user.
+(e) Normalize the matrix by subtracting from each nonblank entry the average value for its user.
 
 ```{r}
-df.normalized <- t(apply(df, 1, function(i) {
+ normalized <- t(apply(df, 1, function(i) {
   i - mean(i, na.rm=TRUE)
 }))
 
-df.normalized
+normalized
 ```
+
 (f) Using the normalized matrix from Part (e), compute the cosine distance between each pair of users.
 
+```{r, eval=FALSE}
 
-```{r}
-df.normalized[is.na(df.normalized)] <- 0
+normalized[is.na(normalized)] <- 0
 
-# Apply distance function
-cd.f <- user.pairs
-cd.f["Cosine.Distance"] <-
+cos.sim <- function(ix) 
+{
+    A = X[ix[1],]
+    B = X[ix[2],]
+    return( sum(A*B)/sqrt(sum(A^2)*sum(B^2)) )
+}   
+n <- nrow(X) 
+cmb <- expand.grid(i=1:n, j=1:n) 
+C <- matrix(apply(cmb,1,cos.sim),n,n)
+
+cos.sim(normalized)
+```
+
+
+```{r, echo=FALSE}
+normalized[is.na(normalized)] <- 0
+
+
+cosined.f <- user.pairs
+cosined.f["Cosine.Distance"] <-
   apply(user.pairs, 1, function(i) {
-    v1 <- df.normalized[i[1], ]
-    v2 <- df.normalized[i[2], ]
+    v1 <- normalized[i[1], ]
+    v2 <- normalized[i[2], ]
     cosine.dist(v1, v2)
   })
 
-# Format output
-cd.f
+
+cosined.f
 
 ```
