@@ -27,8 +27,32 @@ df <- data.frame(a = c(4, NA, 2),
 rownames(df) <- c("A", "B", "C")
 cn <- colnames(df)
 user.pairs <- as.data.frame(t(combn(rownames(df), 2)))
-colnames(user.pairs) <- c("User1", "User2")
+colnames(user.pairs) <- c("UserPair1", "UserPair2")
 
+```
+
+
+```{r, eval=FALSE}
+library(Matrix)
+jaccard <- function(m) {
+    A = tcrossprod(m)
+    im = which(A > 0, arr.ind=TRUE)
+    b = rowSums(m)
+    Aim = A[im]
+
+    ## Jacard formula: #common / (#i + #j - #common)
+    J = sparseMatrix(
+          i = im[,1],
+          j = im[,2],
+          x = Aim / (b[im[,1]] + b[im[,2]] - Aim),
+          dims = dim(A)
+    )
+
+    return( J )
+}
+
+```
+```{r, echo=FALSE}
 jaccard <- function(v1, v2) {
   length(intersect(v1, v2)) / length(union(v1, v2))
 }
@@ -48,21 +72,24 @@ jd
 (b) Repeat Part (a), but use the cosine distance.
 
 ```{r}
-len <- function(v) { sqrt(sum(v**2)) }
+len <- function(v) { 
+  sqrt(sum(v**2)) 
+  }
+
 cosine.dist <- function(v1, v2) {
   v1[is.na(v1)] <- 0
   v2[is.na(v2)] <- 0
   (as.numeric(v1) %*% as.numeric(v2)) / (len(v1) * len(v2))
 }
 
-# Apply distance function
+
 cd <- user.pairs
 cd["Cosine.Distance"] <- 
   apply(user.pairs, 1, function(i) {
     cosine.dist(df[i[1], ], df[i[2], ])
 })
 
-# Format output
+
 cd
 
 ```
