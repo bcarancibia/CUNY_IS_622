@@ -9,7 +9,7 @@ __9.4.2__
 
 If we wish to start out, as in Fig. 9.10, with all U and V entries set to the same value, what value minimizes the RMSE for the matrix M of our running example?
 
-![Table](//Users/bcarancibia/CUNY_IS_622/week12/910.png)
+![Table](//home/bcarancibia/CUNY_IS_622/week12/910.png)
 
 Above is figure 9.10 but we want to maximize running example matrix M (which has the missing values)
 
@@ -27,14 +27,14 @@ uij = vij = x
 
 Did calculation on paper because it is easier to write and calculate. See image below.
 
-![Table](//Users/bcarancibia/CUNY_IS_622/week12/IMG_0042.png)
+![Table](//home/bcarancibia/CUNY_IS_622/week12/IMG_0042.png)
 
 
 __9.4.3__
 
 Starting with the U and V matrices in Fig. 9.16, do the following in order:
 
-![Table](//Users/bcarancibia/CUNY_IS_622/week12/910.png)
+![Table](//home/bcarancibia/CUNY_IS_622/week12/910.png)
 
 (a) Reconsider the value of u11. Find its new best value, given the changes that have been made so far.
 
