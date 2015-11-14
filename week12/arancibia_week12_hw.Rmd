@@ -1,0 +1,41 @@
+---
+title: "IS 622 Week 12 Homework"
+author: "Ben Arancibia"
+date: "November 14, 2015"
+output: pdf_document
+---
+
+__9.4.2__
+
+If we wish to start out, as in Fig. 9.10, with all U and V entries set to the same value, what value minimizes the RMSE for the matrix M of our running example?
+
+![Table](//Users/bcarancibia/CUNY_IS_622/week12/910.png)
+
+Above is figure 9.10 but we want to maximize running example matrix M (which has the missing values)
+
+```{r}
+M <- matrix(c(5, 2,  4, 4, 3, 3, 1,  2, 4, 1, 2, NA, 3, 1, 4, 2, 5,  4, 3, 5, 4, 4,  5, 4, NA), byrow=TRUE, ncol=5)
+```
+
+Look at table to find values for minimizing RMSE.
+
+```{r}
+table(M)
+```
+
+uij = vij = x
+
+Did calculation on paper because it is easier to write and calculate. See image below.
+
+
+__9.4.3__
+
+Starting with the U and V matrices in Fig. 9.16, do the following in order:
+
+![Table](//Users/bcarancibia/CUNY_IS_622/week12/910.png)
+
+(a) Reconsider the value of u11. Find its new best value, given the changes that have been made so far.
+
+(b) Then choose the best value for u52.
+
+(c) Then choose the best value for v22.
