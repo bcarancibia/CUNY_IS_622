@@ -34,7 +34,15 @@ __9.4.3__
 
 Starting with the U and V matrices in Fig. 9.16, do the following in order:
 
-![Table](//home/bcarancibia/CUNY_IS_622/week12/910.png)
+![Table](//home/bcarancibia/CUNY_IS_622/week12/916.png)
+
+
+```{r}
+U <- matrix(c(2.6, 1, 1.178, 1, 1, 1, 1, 1, 1, 1), ncol=2)
+V <- matrix(c(1.617,1,1,1,1,1,1,1,1,1), ncol=5)
+
+P <- U %*% V
+```
 
 (a) Reconsider the value of u11. Find its new best value, given the changes that have been made so far.
 
