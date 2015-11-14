@@ -27,6 +27,8 @@ uij = vij = x
 
 Did calculation on paper because it is easier to write and calculate. See image below.
 
+![Table](//Users/bcarancibia/CUNY_IS_622/week12/IMG_0042.png)
+
 
 __9.4.3__
 
