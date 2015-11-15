@@ -56,22 +56,18 @@ M <- matrix(c(5, 2,  4, 4, 3, 3, 1,  2, 4, 1, 2, NA, 3, 1, 4, 2, 5,  4, 3, 5, 4,
 To find this value you need to calculate the numerator and denominator. This is a five by five matrix so I will calculate numerator by taking the Matrix V multiplied by  (Matrix M - Matrix U * matrix V) for each element of the matrix. For the denominator I will just take Matrix V location. Netflix leaderboard helped with this implementation. 
 
 ```{r}
-#elements of u
+u11 <- (sum(M[1,]) - sum(V[2,])) / sum(V[1,])
 
-a <- 1
-b <- 1
+u11
 
-numerator <- sum(sapply(1:5, function(j) { 
-  V[b, j] * (M[a, j] - sum(U[a, -c(b)] * V[-c(b), j])) 
-  }))
+#update U and then multiply
 
-denominator <- sum(sapply(1:5, function(j) { 
-  V[b, j]**2; 
-  }))
+U11 <- U
+U11[1,1] <- u11
 
-U[a,b] <- numerator / denominator
+U11V <- U11 %*% V
 
-U
+U11V
 ```
 
 
@@ -79,55 +75,32 @@ U
 
 update for element in u 5,2
 ```{r}
-#elements of u
+u52 <- (sum(M[5,-5]) - sum(V[1,-5])) / sum(V[2,-5])
 
+U52 <- U11
+U52[5,2] <- u52
 
-a <- 5
-b <- 2
+U52V <- U52 %*% V
 
-
-numerator <- sum(sapply(1:5, function(j) { 
-  V[b, j] * (M[a, j] - sum(U[a, -c(b)] * V[-c(b), j])) 
-  }))
-
-denominator <- sum(sapply(1:5, function(j) { 
-  V[b, j]**2; 
-  }))
-
-U[a,b] <- numerator / denominator
-
-U
-
+U52V
 ```
 
 (c) Then choose the best value for v22.
 
-update for element in u 5,2
+update for element in v 2,2
 
 ```{r}
-#elements of v
+v22 <- (sum(M[-3,2])-sum(U52[-3,1])) / sum(U52[-3,2])
 
+V22 <- V
+V22[2,2] <- v22
 
-a <- 2
-b <- 2
+U52V22 <- U52 %*% V22 
 
-
-numerator <- sum(sapply(1:5, function(j) { 
-  V[b, j] * (M[a, j] - sum(U[a, -c(b)] * V[-c(b), j])) 
-  }))
-
-denominator <- sum(sapply(1:5, function(j) { 
-  V[b, j]**2; 
-  }))
-
-V[a,b] <- numerator / denominator
-
-V
-
-
+U52V22
 ```
 
-Pages 333-335 and this github repo were my main references:
+Pages 329-335 and this github repo were my main references:
 
 https://github.com/shngli/Data-Mining-Python/blob/master/Mining%20massive%20datasets/Dimensionality%20Reduction.ipynb
 
