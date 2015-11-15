@@ -48,7 +48,7 @@ P
 M <- matrix(c(5, 2,  4, 4, 3, 3, 1,  2, 4, 1, 2, NA, 3, 1, 4, 2, 5,  4, 3, 5, 4, 4,  5, 4, NA), byrow=TRUE, ncol=5)
 
 
-#sqrt((M-P)**2)
+
 ```
 
 (a) Reconsider the value of u11. Find its new best value, given the changes that have been made so far.
@@ -70,10 +70,8 @@ denominator <- sum(sapply(1:5, function(j) {
   }))
 
 U[a,b] <- numerator / denominator
-#updated
+
 U
-P <- U %*%V
-P
 ```
 
 
@@ -97,11 +95,8 @@ denominator <- sum(sapply(1:5, function(j) {
   }))
 
 U[a,b] <- numerator / denominator
-#updated
-U
 
-P <- U %*%V
-P
+U
 
 ```
 
@@ -126,11 +121,9 @@ denominator <- sum(sapply(1:5, function(j) {
   }))
 
 V[a,b] <- numerator / denominator
-#updated
+
 V
 
-P <- U %*%V
-P
 
 ```
 
