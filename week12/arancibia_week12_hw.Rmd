@@ -42,10 +42,98 @@ U <- matrix(c(2.6, 1, 1.178, 1, 1, 1, 1, 1, 1, 1), ncol=2)
 V <- matrix(c(1.617,1,1,1,1,1,1,1,1,1), ncol=5)
 
 P <- U %*% V
+P
+
+#from above
+M <- matrix(c(5, 2,  4, 4, 3, 3, 1,  2, 4, 1, 2, NA, 3, 1, 4, 2, 5,  4, 3, 5, 4, 4,  5, 4, NA), byrow=TRUE, ncol=5)
+
+
+#sqrt((M-P)**2)
 ```
 
 (a) Reconsider the value of u11. Find its new best value, given the changes that have been made so far.
 
+To find this value you need to calculate the numerator and denominator. This is a five by five matrix so I will calculate numerator by taking the Matrix V multiplied by  (Matrix M - Matrix U * matrix V) for each element of the matrix. For the denominator I will just take Matrix V location. Netflix leaderboard helped with this implementation. 
+
+```{r}
+#elements of u
+
+a <- 1
+b <- 1
+
+numerator <- sum(sapply(1:5, function(j) { 
+  V[b, j] * (M[a, j] - sum(U[a, -c(b)] * V[-c(b), j])) 
+  }))
+
+denominator <- sum(sapply(1:5, function(j) { 
+  V[b, j]**2; 
+  }))
+
+U[a,b] <- numerator / denominator
+#updated
+U
+P <- U %*%V
+P
+```
+
+
 (b) Then choose the best value for u52.
 
+update for element in u 5,2
+```{r}
+#elements of u
+
+
+a <- 5
+b <- 2
+
+
+numerator <- sum(sapply(1:5, function(j) { 
+  V[b, j] * (M[a, j] - sum(U[a, -c(b)] * V[-c(b), j])) 
+  }))
+
+denominator <- sum(sapply(1:5, function(j) { 
+  V[b, j]**2; 
+  }))
+
+U[a,b] <- numerator / denominator
+#updated
+U
+
+P <- U %*%V
+P
+
+```
+
 (c) Then choose the best value for v22.
+
+update for element in u 5,2
+
+```{r}
+#elements of v
+
+
+a <- 2
+b <- 2
+
+
+numerator <- sum(sapply(1:5, function(j) { 
+  V[b, j] * (M[a, j] - sum(U[a, -c(b)] * V[-c(b), j])) 
+  }))
+
+denominator <- sum(sapply(1:5, function(j) { 
+  V[b, j]**2; 
+  }))
+
+V[a,b] <- numerator / denominator
+#updated
+V
+
+P <- U %*%V
+P
+
+```
+
+```
+
+
