@@ -1,0 +1,86 @@
+---
+title: "IS 622 Week 13 Homework"
+author: "Ben Arancibia"
+date: "November 21, 2015"
+output:
+  pdf_document:
+    latex_engine: xelatex
+---
+
+__10.2.1__
+Figure 10.9 is an example of a social-network graph. Use the Girvan-Newman approach to find the number of shortest paths from each
+of the following nodes that pass through each of the edges. (a) A (b) B.
+
+![Figure 10.9](//users/bcarancibia/CUNY_IS_622/week13/109.png)
+
+Easier to solve this problem on paper. Images are below.
+
+a) 
+![Answer (A)](//users/bcarancibia/CUNY_IS_622/week13/IMG_0043.png)
+
+b)
+![Answer (B)](//users/bcarancibia/CUNY_IS_622/week13/IMG_0044.png)
+
+__10.2.2__
+Using symmetry, the calculations of Exercise 10.2.1 are all you need to compute the betweenness of each edge. Do the calculation.
+
+![Figure 10.9](//users/bcarancibia/CUNY_IS_622/week13/109.png)
+
+If you look at the diagram 10.9 which is above. You can see that the symmetry means that the same result of calculations would occur if the diagram is rotated 90 degrees to the right for root I or rotated another 90 degrees for root F.
+
+Here are the calculations to compute the betweenness of each edge.
+
+A-B root: 4
+
+F-E root: 0
+
+I-H root: 1
+
+For the second part of question 10.2.1 (root node B) there could be six root nodes which can be seen by rotating the diagram. These root nodes are B (original node), C, D, E, H, I. 
+
+Here are the calculations to compute the betweenness of each edge.
+
+A-C root: 0
+
+H-I root: 1
+
+I-G root: 0
+
+D-F root: 1
+
+E-F root: 0
+
+__10.4.1__
+
+For the graph of Fig. 10.9, construct: 
+
+![Figure 10.9](//users/bcarancibia/CUNY_IS_622/week13/109.png)
+
+(a) The adjacency matrix.
+
+```{r, tidy=TRUE}
+adjanceny <- matrix(c(0,1,1,0,0,0,0,0,0, 1,0,1,0,0,0,0,1,0, 1,1,0,1,0,0,0,0,0, 0,0,1,0,1,1,0,0,0, 0,0,0,1,0,1,1,0,0, 0,0,0,1,1,0,0,0,0, 0,0,0,0,1,0,0,1,1, 0,1,0,0,0,0,1,0,1, 0,0,0,0,0,0,1,1,0), ncol=9)
+colnames(adjanceny)<-c('A','B','C','D','E','F','G','H','I')
+rownames(adjanceny)<-c('A','B','C','D','E','F','G','H','I')
+
+```
+
+(b) The degree matrix.
+
+```{r, tidy=TRUE}
+degree <- matrix(c(2,0,0,0,0,0,0,0,0, 0,3,0,0,0,0,0,0,0, 0,0,3,0,0,0,0,0,0, 0,0,0,3,0,0,0,0,0, 0,0,0,0,3,0,0,0,0, 0,0,0,0,0,2,0,0,0, 0,0,0,0,0,0,3,0,0, 0,0,0,0,0,0,0,3,0, 0,0,0,0,0,0,0,0,2), ncol=9)
+
+colnames(degree)<-c('A','B','C','D','E','F','G','H','I')
+rownames(degree)<-c('A','B','C','D','E','F','G','H','I')
+
+```
+
+(c) The Laplacian matrix.
+
+Laplacian matrix calculation from page 365: "In addition for the Laplacian matrix, the expression (x^T)Lx  has a useful equivalent expression. Recall that L = D − A, where D and A are the degree and adjacency matrices of the same graph."
+
+```{r}
+L = (degree - adjanceny)
+
+L
+```
