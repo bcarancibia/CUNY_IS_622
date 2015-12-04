@@ -18,35 +18,71 @@ matrix
 
 ```{r}
 x <- matrix(c(1,1,1))
-thresh <- 0.0007
-powerm_nr = function(A, x, thresh)
-{
-    m0 = x[which.max(abs(x))]
-    x1 = A %*% (x / m0)
-    m1 = x1[which.max(abs(x1))]
-    cat(m1, '\n')
-    while(abs(m1 - m0) > thresh)
-    {
-        m0 = m1
-        x1 = A %*% (x1 / m1)
-        m1 = x1[which.max(abs(x1))]
-    }
-    m1
+tolerance <- 0.0007
+
+#page 409
+frobenius.norm <- function(M) {
+  return(sqrt(sum(apply(M, c(1, 2), function(x) {x*x}))));
 }
 
-powerm_nr(matrix, x, thresh)
+#pages 409-410
+powerm_nr <- function(M, x, tolerance){
+ diff = 1
+  x_new <- x
+  count <- 0;
+  while(diff > tolerance && count < 10000) {
+    x_old <- x_new
+    x_new <- (M %*% x_old) / frobenius.norm(M %*% x_old)
+    if(x_new[which.max(abs(x_new))] < 0) {
+      x_new <- -1 * x_new;
+    }
+    diff <- frobenius.norm(x_new - x_old)
+    count <- count + 1;
+  }
+  return(x_new);
+}
+
+
+evector <- powerm_nr(matrix, x, tolerance)
+evector
 ```
 
 (b) Compute an estimate the principal eigenvalue for the matrix.
 
-
+```{r}
+eigen_value <- function(M, evector) {
+  return(as.double(t(evector) %*% M %*% evector))
+}
+eigen.one <- eigen_value(matrix, evector)
+eigen.one
+```
 
 (c) Construct a new matrix by subtracting out the effect of the principal eigenpair, as in Section 11.1.3.
 
+```{r}
+#substract out the effect of the principal eigenpair
+matrixc <- matrix - eigen.one * evector %*% t(evector)
+```
+
 (d) From your matrix of (c), find the second eigenpair for the original matrix of Exercise 11.1.4.
 
-(e) Repeat (c) and (d) to find the third eigenpair for the original matrix.
+```{r}
+evector.two <- powerm_nr(matrixc, x, tolerance)
+evector.two
 
+eigen.two <- eigen_value(matrixc, evector)
+eigen.two
+```
+(e) Repeat (c) and (d) to find the third eigenpair for the original matrix.
+```{r}
+matrixe <-  matrixc- eigen.two * evector.two %*% t(evector.two)
+
+evector.three <- powerm_nr(matrixe, x, tolerance)
+evector.three
+
+eigen.three <- eigen_value(matrixe, evector.three)
+eigen.three
+```
 
 __11.3.2__
 
@@ -55,30 +91,14 @@ Use the SVD from Fig. 11.7. Suppose Leslie assigns rating 3 to Alien and rating 
 
 ![Figure 11.7](//users/bcarancibia/CUNY_IS_622/week15/117.png)
 
-```{r}
-M <- matrix(c(1,1,1,0,0,
-              3,3,3,0,0,
-              4,4,4,0,0,
-              5,5,5,0,0,
-              0,0,0,4,4,
-              0,0,0,5,5,
-              0,0,0,2,2), ncol=5, byrow=TRUE)
+```{r, tidy=TRUE}
 
-U <- matrix(c(0.14, 0,
-              0.42, 0,
-              0.56, 0,
-              0.70, 0,
-              0, 0.60,
-              0, 0.75,
-              0, 0.30), ncol=2, byrow=TRUE)
-
-Sigma <- matrix(c(12.4, 0, 0, 9.5), ncol=2, byrow=TRUE)
-
-Vt <- matrix(c(0.58, 0.58, 0.58, 0, 0,
-              0, 0, 0, 0.71, 0.71), ncol=5, byrow=TRUE)
+vt <- matrix(c(0.58, 0.58, 0.58, 0, 0,0, 0, 0, 0.71, 0.71), ncol=5, byrow=TRUE)
 
 leslie <- c(0, 3, 0, 0, 4)
 
-leslie %*% t(Vt) 
+leslie %*% t(vt) 
 
 ```
+
+She will rank the Titanic higher than Alien.
