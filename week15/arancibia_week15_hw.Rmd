@@ -16,7 +16,37 @@ matrix
 
 (a) Starting with a vector of three 1’s, use power iteration to find an approximate value of the principal eigenvector.
 
-```{r}
+```{r, eval=FALSE}
+x <- matrix(c(1,1,1))
+tolerance <- 0.0007
+
+#page 409
+frobenius.norm <- function(A)
+    {
+    sqrt(sum(diag(t(M)%*%M))
+    }
+
+
+#pages 409-410
+powerm_nr  <- function(M, x, tolerance) {
+  for (j in 1:k) {
+    u = x/vnorm(x)
+    x = A %*% u
+    new = x/vnorm(x)
+    if (vnorm(new-u,'I')<tol) break
+  }
+  lambda = (t(u) %*% x)[1]
+  u = x/vnorm(x)
+  return(list(val=lambda,vec=u,steps = j))
+}
+
+
+evector <- powerm_nr(matrix, x, tolerance)
+evector
+
+```
+
+```{r, echo=FALSE}
 x <- matrix(c(1,1,1))
 tolerance <- 0.0007
 
@@ -24,6 +54,7 @@ tolerance <- 0.0007
 frobenius.norm <- function(M) {
   return(sqrt(sum(apply(M, c(1, 2), function(x) {x*x}))));
 }
+
 
 #pages 409-410
 powerm_nr <- function(M, x, tolerance){
@@ -46,6 +77,8 @@ powerm_nr <- function(M, x, tolerance){
 evector <- powerm_nr(matrix, x, tolerance)
 evector
 ```
+
+
 
 (b) Compute an estimate the principal eigenvalue for the matrix.
 
