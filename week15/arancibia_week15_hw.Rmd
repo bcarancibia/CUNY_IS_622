@@ -29,7 +29,7 @@ frobenius.norm <- function(A)
 
 #pages 409-410
 powerm_nr  <- function(M, x, tolerance) {
-  for (j in 1:k) {
+  for (j in 1:x) {
     u = x/vnorm(x)
     x = A %*% u
     new = x/vnorm(x)
