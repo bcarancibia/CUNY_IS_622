@@ -1,0 +1,34 @@
+---
+title: "CUNY IS 622"
+author: "Ben Arancibia"
+date: "December 12, 2015"
+output: pdf_document
+---
+
+__11.4.1__
+
+The SVD for the matrix
+
+![Figure 11.4.1](//users/bcarancibia/CUNY_IS_622/week16/1141.png)
+
+Find the Moore-Penrose pseudoinverse of M.
+
+```{r, warning=FALSE}
+
+library(matrixkit)
+M <- matrix(c(48, 14, 14, -48), ncol=2, byrow=TRUE)
+
+
+pseudoinverse <- function(x, tol)
+{
+  SVD = smart_svd(x, tol)
+  
+  if (length(SVD$d) == 0) {
+    return(array(0, dim(x)[2:1]))
+  } else {
+    return(SVD$v %*% (1/SVD$d * t(SVD$u)))
+  }    
+}
+
+pseudoinverse(M)
+```
